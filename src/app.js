@@ -14,8 +14,7 @@ const {
     addActor,
     listActor
 } = require("./actor/functions");
-const Actor = require("./actor/table");
-const Movie = require("./movie/table");
+const { Actor, Movie } = require("./associations.js");
 // const { belongsTo } = require("sequelize/types");
 
 const app = async (yargsObj) => {
@@ -25,11 +24,11 @@ const app = async (yargsObj) => {
         console.log("A: sync method hit");
 
         // Create 1-1 table relationship. Add movieID col to the Actor table
-        Actor.hasOne(Movie, {
-            foreignKey: "movieID"
-        });
-        Movie.belongsTo(Actor);
-        console.log("A: 1-1 rel hit");
+        // Actor.hasOne(Movie, {
+        //     foreignKey: "movieID"
+        // });
+        // Movie.belongsTo(Actor);
+        // console.log("A: 1-1 rel hit");
 
         if (yargsObj.movie) {
             console.log("A: Movie command list");
@@ -38,6 +37,7 @@ const app = async (yargsObj) => {
                 // Take movie key value pairs from yargsObj and send the to a add function and return movie
                 await addMovie({
                     title: yargsObj.title,
+                    ActorId: yargsObj.actorId
                 });
 
             } else if (yargsObj.list) {
@@ -85,7 +85,7 @@ const app = async (yargsObj) => {
 app(yargs.argv);
 
 // COMMANDS - MOVIE
-// ADD: node src/app.js --movie --add --title "movie1"
+// ADD: node src/app.js --movie --add --title "movie1" --actorId "1"
 // LIST: node src/app.js --movie --list
 // UPDATE: node src/app.js --movie--movie --update --title "" --newTitle ""
 // DELETE: node src/app.js --movie --delete --title ""

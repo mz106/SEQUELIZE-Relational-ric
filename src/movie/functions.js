@@ -1,4 +1,4 @@
-const Movie = require("./table");
+const { Movie, Actor } = require("../associations.js");
 
 exports.addMovie = async (movieObj) => {
     try {
@@ -13,10 +13,16 @@ exports.addMovie = async (movieObj) => {
 // List Movie
 exports.listMovie = async () => {
     try {
-        const response = await Movie.findAll();
-        for (let i = 0; i < response.length; i++) {
-            console.log(response[i].dataValues.title, response[i].dataValues.actor, response[i].dataValues.directorID)
+        const movie = await Movie.findAll();
+        const arr = [];
+        
+        for (let i = 0; i < movie.length; i++) {
+            const actor = await Actor.findAll({where: { id: movie[i].ActorId }})
+            arr.push({title: movie[i].title, actor: actor[0].dataValues.fullName});
         }
+
+        arr.forEach(item => console.log(item.title, item.actor))
+       
     } catch (error) {
         console.log(error);
     }

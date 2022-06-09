@@ -1,4 +1,4 @@
-const Actor = require("./table");
+const { Actor } = require("../associations.js");
 
 exports.addActor = async (actorObj) => {
     try {
@@ -15,9 +15,10 @@ exports.listActor = async () => {
     try {
         const response = await Actor.findAll();
         console.log("F: await actor hit")
-        for (let i = 0; i < response.length; i++) {
-            console.log("F: for loop hit",response[i].dataValues.fullName)
-        }
+        // for (let i = 0; i < response.length; i++) {
+        //     console.log("F: for loop hit",response[i].dataValues.fullName)
+        // }
+        console.log(response)
     } catch (error) {
         console.log(error);
     }

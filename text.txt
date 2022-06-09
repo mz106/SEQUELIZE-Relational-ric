@@ -1,0 +1,49 @@
+
+
+table name: employee details
+id: integer, Primary Key(PK) 
+employee_name: string
+os: integer (FK) os table
+job_title: integer Foregin Key(FK) job title table
+
+table name: os
+id: integer (PK)
+oc_name: string
+
+mac:
+id: 1
+oc_name: mac
+
+bob:
+id: 1
+employee_name: bob
+os: 1
+job_title: 1
+
+jane:
+id: 2
+employee_name: jane
+os: mac
+
+
+table name: job titles
+id: integer, Primary Key(PK)
+title: string
+wage: integer
+
+junior dev:
+id: 1
+title: junior dev
+wage: 10000
+
+senior dev:
+id: 2
+title: senior dev
+wage: 20000
+
+Bob Table:
+id: 1
+employee_name: bob
+jobtitle: junior dev
+wage: 10000
+os: mac
