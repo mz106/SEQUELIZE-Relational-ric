@@ -11,10 +11,12 @@ exports.addActor = async (actorObj) => {
 
 // List Actors
 exports.listActor = async () => {
+    console.log("F: listActor initial hit");
     try {
         const response = await Actor.findAll();
+        console.log("F: await actor hit")
         for (let i = 0; i < response.length; i++) {
-            console.log(response[i].dataValues.fullName)
+            console.log("F: for loop hit",response[i].dataValues.fullName)
         }
     } catch (error) {
         console.log(error);

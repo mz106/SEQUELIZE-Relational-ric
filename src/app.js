@@ -2,6 +2,7 @@ const yargs = require("yargs"); // require yargs to access teh terminal and issu
 const {
     sequelize
 } = require("./db/connection");
+
 const {
     addMovie,
     listMovie,
@@ -13,11 +14,22 @@ const {
     addActor,
     listActor
 } = require("./actor/functions");
+const Actor = require("./actor/table");
+const Movie = require("./movie/table");
+// const { belongsTo } = require("sequelize/types");
 
 const app = async (yargsObj) => {
     try {
-        // Any table thats been defined against my sequelize conenction will be created if it doesnt already exist
-        await sequelize.sync();
+        // Any table thats been defined against my sequelize connection will be created if it doesnt already exist
+        await sequelize.sync({alter:true});
+        console.log("A: sync method hit");
+
+        // Create 1-1 table relationship. Add movieID col to the Actor table
+        Actor.hasOne(Movie, {
+            foreignKey: "movieID"
+        });
+        Movie.belongsTo(Actor);
+        console.log("A: 1-1 rel hit");
 
         if (yargsObj.movie) {
             console.log("A: Movie command list");
@@ -25,7 +37,7 @@ const app = async (yargsObj) => {
                 console.log("App: yargsObj added")
                 // Take movie key value pairs from yargsObj and send the to a add function and return movie
                 await addMovie({
-                    title: yargsObj.title
+                    title: yargsObj.title,
                 });
 
             } else if (yargsObj.list) {
@@ -47,10 +59,10 @@ const app = async (yargsObj) => {
                 });
 
             } else {
-                console.log("App: incorrect command");
+                console.log("A: incorrect command");
             }
-        } else if (yargsObj.actor) { // End of movie command list
-            console.log("A: Actor command list"); // Actor command list ////////////////////////////////////////////////////////
+        } else if (yargsObj.actor) { // Actor command list ////////////////////////////////////////////////////////
+            console.log("A: Actor command list hit"); 
 
             if (yargsObj.add) {
                 await addActor({
@@ -59,13 +71,12 @@ const app = async (yargsObj) => {
             } else if (yargsObj.list) {
                 await listActor();
             }
-
-
-
+            else{
+                console.log("App: incorrect command");
+                console.log("Not specified if Movie or Actor entry");
+            }
         } // End of Actor command list
-
-
-        ///////////////////////////////////////////////////////////////////////////////
+        
     } catch (error) {
         console.log("App: catch error", error);
     }
@@ -84,3 +95,5 @@ app(yargs.argv);
 // LIST: node src/app.js --actor --list
 // UPDATE:
 // DELETE:
+
+// COMMANDS - MOVIE + ACTOR
