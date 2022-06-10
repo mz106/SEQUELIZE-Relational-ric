@@ -18,6 +18,11 @@ const { Actor, Movie } = require("./associations.js");
 // const { belongsTo } = require("sequelize/types");
 
 const app = async (yargsObj) => {
+
+    // const obj = {
+    //     [yargsObj.key1]: yargsObj.val1,
+    // };
+
     try {
         // Any table thats been defined against my sequelize connection will be created if it doesnt already exist
         await sequelize.sync({alter:true});
